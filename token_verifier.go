@@ -33,9 +33,9 @@ func verify(projectID, tokenString string) (*Token, error) {
 		if !ok {
 			return nil, errors.New("Firebase Auth ID Token has no 'kid' claim")
 		}
-		cert, err := certs.Cert(kid)
-		if err != nil {
-			return nil, err
+		cert, certErr := certs.Cert(kid)
+		if certErr != nil {
+			return nil, certErr
 		}
 		return []interface{}{cert.PublicKey}, nil
 	}
