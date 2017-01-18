@@ -26,7 +26,12 @@ func (o *Options) ensureServiceAccount() error {
 
 	f, err := os.Open(o.ServiceAccountPath)
 	if err != nil {
-		return fmt.Errorf("Service Account file cannot be opened: %s %v", o.ServiceAccountPath, err)
+		return ErrValue{
+			msg: fmt.Sprintf(
+				"Service Account file cannot be opened: %s", o.ServiceAccountPath,
+			),
+			val: err,
+		}
 	}
 	defer f.Close()
 

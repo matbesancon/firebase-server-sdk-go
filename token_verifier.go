@@ -1,7 +1,6 @@
 package firebase
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -31,14 +30,20 @@ func VerifyIDToken(projectID, tokenString string) (*Token, error) {
 	}
 	decodedJWS, ok := decodedJWT.(jws.JWS)
 	if !ok {
-		return nil, errors.New("Firebase Auth ID Token cannot be decoded")
+		return nil, ErrValue{
+			msg: "Firebase Auth ID Token cannot be decoded",
+			val: decodedJWT,
+		}
 	}
 
 	keys := func(j jws.JWS) ([]interface{}, error) {
 		certs := &Certificates{URL: clientCertURL}
 		kid, ok := j.Protected().Get("kid").(string)
 		if !ok {
-			return nil, errors.New("Firebase Auth ID Token has no 'kid' claim")
+			return nil, ErrValue{
+				msg: "Firebase Auth ID Token has no 'kid' claim",
+				val: j.Protected(),
+			}
 		}
 		cert, certErr := certs.Cert(kid)
 		if certErr != nil {
