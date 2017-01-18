@@ -72,5 +72,5 @@ func (a *Auth) VerifyIDToken(tokenString string) (*Token, error) {
 		return nil, err
 	}
 	projectID := a.app.options.ServiceAccountCredential.ProjectID
-	return verify(projectID, tokenString)
+	return VerifyIDToken(projectID, tokenString)
 }

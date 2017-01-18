@@ -17,7 +17,14 @@ const clientCertURL = "https://www.googleapis.com/robot/v1/metadata/x509/securet
 // defaultAcceptableExpSkew is the default expiry leeway.
 const defaultAcceptableExpSkew = 300 * time.Second
 
-func verify(projectID, tokenString string) (*Token, error) {
+// VerifyIDToken parses and verifies a Firebase ID Token.
+// A Firebase application can identify itself to a trusted backend server by
+// sending its Firebase ID Token (accessible via the getToken API in the
+// Firebase Authentication client) with its request.
+// The backend server can then use the VerifyIDToken() function to verify the
+// token is valid, meaning: the token is properly signed, has not expired,
+// and it was issued for a given project ID.
+func VerifyIDToken(projectID, tokenString string) (*Token, error) {
 	decodedJWT, err := jws.ParseJWT([]byte(tokenString))
 	if err != nil {
 		return nil, err
